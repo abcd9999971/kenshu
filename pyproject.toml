@@ -11,6 +11,7 @@ django = "^5.1.7"
 djangorestframework = "^3.15.2"
 flake8 = "^7.1.2"
 black = "^25.1.0"
+django-cors-headers = "^4.7.0"
 
 
 [build-system]
