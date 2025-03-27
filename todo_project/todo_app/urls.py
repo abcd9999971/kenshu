@@ -9,6 +9,6 @@ router.register(r'subtasks', SubTaskViewSet)
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
 ]
     
