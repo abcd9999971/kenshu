@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasks 列表</title>
+</head>
+<body>
+    <h1>Tasks</h1>
+    <ul id="task-list">載入中...</ul>
+
+    <script>
+        async function fetchTasks() {
+            const response = await fetch("http://127.0.0.1:8000/tasks/");
+            const tasks = await response.json();
+            const taskList = document.getElementById("task-list");
+            taskList.innerHTML = "";  // 清空
+
+            if (tasks.length === 0) {
+                taskList.innerHTML = "<li>目前沒有任務</li>";
+            } else {
+                tasks.forEach(task => {
+                    const li = document.createElement("li");
+                    li.textContent = `${task.name} - ${task.status}`;
+                    taskList.appendChild(li);
+                });
+            }
+        }
+
+        fetchTasks();  // 頁面載入時請求 API
+    </script>
+</body>
+</html>

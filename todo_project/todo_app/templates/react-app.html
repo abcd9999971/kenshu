@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React in Django</title>
+    <link rel="stylesheet" href="{% static 'react/static/css/main.css' %}">
+</head>
+<body>
+    <div id="root"></div>  <!-- 這裡是 React 根節點 -->
+
+    <script src="{% static 'react/static/js/main.js' %}"></script>  <!-- 引入 React 編譯後的 JS 文件 -->
+</body>
+</html>
