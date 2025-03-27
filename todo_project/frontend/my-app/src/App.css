@@ -1,0 +1,46 @@
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  padding: 10px;
+}
+
+.todo-list {
+  width: 66%;
+  padding-right: 10px;
+}
+
+.todo-detail {
+  width: 33%;
+  padding-left: 10px;
+}
+
+.todo-item {
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+
+
