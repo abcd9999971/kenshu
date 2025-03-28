@@ -3,8 +3,11 @@ export interface Todo {
     title: string;
     deadline: string;
     completed: boolean;
-    detail?: Detail;
+    details?: Detail[];
   }
     export interface Detail {
         title: string;
+        todo_id: number;
+        completed: boolean;
     }
+
