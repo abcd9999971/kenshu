@@ -1,46 +1,350 @@
-.card {
-  padding: 2em;
+
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.read-the-docs {
-  color: #888;
+/* 搜尋欄容器 */
+.search-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--primary-color);
+  padding: 10px 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
-.layout {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+.search-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  background-color: #f8f9fa;
+/* 搜尋列 */
+.search {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  border: 1px solid var(--primary-light);
+  border-radius: 4px;
+  position: relative;
+  background-color: white;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  font-size: 15px;
+  transition: all 0.3s ease;
 }
 
+.search:focus {
+  outline: none;
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 2px rgba(149, 36, 163, 0.2);
+}
+
+/* 主要內容區域 */
 .main {
   display: flex;
+  gap: 20px;
+}
+
+.left {
+  flex: 3;
+}
+
+.right {
   flex: 1;
-  padding: 10px;
 }
 
+/* 卡片樣式 */
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card-header {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: bold;
+  background-color: rgba(149, 36, 163, 0.05);
+}
+
+.card-body {
+  padding: 15px;
+}
+
+/* 新增待辦區域 */
+.add-todo {
+  display: flex;
+  gap: 10px;
+  margin: 10px;
+}
+
+.add-todo input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.add-todo input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(149, 36, 163, 0.1);
+}
+
+button {
+  padding: 10px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background: var(--primary-dark);
+}
+
+button.secondary {
+  background: #f5f5f5;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+button.secondary:hover {
+  background: #e5e5e5;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.delete {
+  padding: 8px 15px;
+  background: var(--danger-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.delete:hover {
+  background: var(--danger-hover);
+}
+
+/* 待辦事項列表 */
 .todo-list {
-  width: 66%;
-  padding-right: 10px;
-}
-
-.todo-detail {
-  width: 33%;
-  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px;
 }
 
 .todo-item {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   cursor: pointer;
-  padding: 10px;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
+  transition: all 0.2s ease;
 }
 
+.todo-item:hover {
+  background-color: rgba(149, 36, 163, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
 
+.todo-item input[type="checkbox"] {
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
 
+.todo-item .todo-title {
+  flex-grow: 1;
+  font-size: 15px;
+}
+
+.todo-item.selected {
+  border-color: var(--primary-color);
+  background-color: rgba(149, 36, 163, 0.08);
+}
+
+.todo-item.completed {
+  opacity: 0.7;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.todo-title.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.todo-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.todo-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.todo-form {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+/* 詳細資訊表單 */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(149, 36, 163, 0.1);
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+  border-top: 1px solid var(--border-color);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.empty-message {
+  padding: 30px 20px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.error {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* 搜索結果為空的提示 */
+.no-results {
+  padding: 20px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  display: none;
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .main {
+      flex-direction: column;
+  }
+  
+  .form-row {
+      grid-template-columns: 1fr;
+  }
+
+  /* 在移動設備上調整詳情面板 */
+  .right .card {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 10px;
+      z-index: 900;
+      max-height: calc(100vh - 90px);
+      overflow-y: auto;
+      display: none;
+  }
+
+  .right .card.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+  }
+
+  /* 添加關閉按鈕 */
+  .close-details {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      color: #666;
+      padding: 5px;
+      font-size: 20px;
+      display: none;
+  }
+
+  .right .card.active .close-details {
+      display: block;
+  }
+}
