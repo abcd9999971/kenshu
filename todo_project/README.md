@@ -13,7 +13,7 @@ poetry run python manage.py runserver
 ```
 ポート番号は8000 (http://localhost:8000/)
 
-###使用可能なAPI
+### 使用可能なAPI
 | HTTP メソッド | URL パス                                      | 機能説明                                   |
 | ------------- | --------------------------------------------- | ------------------------------------------ |
 | GET           | /tasks/                                       | すべてのタスクを取得する                   |
@@ -22,9 +22,11 @@ poetry run python manage.py runserver
 | PATCH         | /tasks/{id}/completed                         | タスクを完了または未完了に設定する           |
 | POST          | /tasks/{id}/subtasks/                         | サブタスクを作成する                       |
 | DELETE        | /tasks/{id}/delete_subtask/{subtask_id}/      | サブタスクを削除する                       |
-| GET           | /tasks/search/                                | タスクを検索する                           |
+| GET           | /tasks/search/                                | タスクを検索する(フロントはfilterを使った)                           |
 | PATCH         | /tasks/{id}/completed/{subtask_id}/           | サブタスクを完了または未完了に設定する       |
 
+
+### その他
 ここで、フロントエンドとバックエンドの用語を分けました
 
 | フロント | バック  |
