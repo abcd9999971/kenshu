@@ -25,33 +25,41 @@ export interface TodoDetailProps {
                         <div className="todo-detail">
                             <h3>{selectedTodo.title}</h3>
                             <p>期限: {selectedTodo.deadline}</p>
-
+                            
                             <p>詳細:</p>
-                            {selectedTodo.details?.map((detail, index) => (
-                            <div key={index}> 
-                                <p><input
+                            {selectedTodo.details?.map((detail) => (
+                            <div key={detail.id}> 
+                                <label htmlFor={`detail-${detail.id}`}>詳細リスト</label>
+                                <p><input //詳細のリスト
                                     type="checkbox"
+                                    id={`detail-${detail.id}`} //inputにIDを付与
                                     checked={detail.completed}
                                     onChange={() => onToggleCompleteSub?.(selectedTodo.id , detail.id)}
                                     onClick={(e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation()}
                                 />{detail.title}
-                                <button onClick={() => onDeleteSub?.(selectedTodo.id, detail.id)}>削除</button>
+                                <button className='delete' onClick={() => onDeleteSub?.(selectedTodo.id, detail.id)}>削除</button>
                                 </p>
                             </div>
                             ))}
-                            <input
+                            
+                            <input //詳細追加
                                 type="text"
                                 placeholder="詳細を追加..."
+                                id='detail-form-input'
                                 value={Subtitle}
                                 onChange={(e) => setSubTitle(e.target.value)}
                             />
                             <p><button onClick={() => {
+                                if (!Subtitle.trim()) {
+                                    alert('詳細を入力してください');    
+                                    return
+                                };
                                 onAddDetail?.(Subtitle, selectedTodo.id);
-                                setSubTitle(""); //reset input 
+                                setSubTitle(""); //送信したらフォームをリセット
                                 }
                             }>詳細追加</button></p>
                             <button onClick={() => onToggleComplete?.(selectedTodo.id)}>完成状態変更</button>
-                            <button onClick={() => onDelete?.(selectedTodo.id)}>TODOを削除</button>
+                            <button className='delete' onClick={() => onDelete?.(selectedTodo.id)}>TODOを削除</button>
                             <button className="close-details" onClick={onClose}>&times;</button>
                         </div>
                     ) : (

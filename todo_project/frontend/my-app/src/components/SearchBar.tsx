@@ -23,6 +23,7 @@ const SearchBar = ({ onSearch }: TodoSearchProps) => {
         <input
           type="text"
           className="search"
+          id="search"
           value={search}
           onChange={handleSearchChange}
           placeholder="ToDoを検索..."

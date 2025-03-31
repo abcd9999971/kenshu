@@ -17,10 +17,11 @@ const TodoList = ({ todos, onToggleComplete, onDelete, onSelectTodo }: TodoListP
     return (
         <div className="todo-list">
             {todos.map((todo) => (
-                <>
                 <div className="todo-item" key={todo.id}>
+                    <label htmlFor={`todo-${todo.id}`}>Todoリスト</label>
                     <input
                         type="checkbox"
+                        id={`todo-${todo.id}`} //inputにIDを付与
                         checked={todo.completed}
                         onChange={() => onToggleComplete && onToggleComplete(todo.id)}
                         onClick={(e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation()}
@@ -30,9 +31,8 @@ const TodoList = ({ todos, onToggleComplete, onDelete, onSelectTodo }: TodoListP
                     <button onClick={() => onSelectTodo && onSelectTodo(todo.id)}>詳細</button>
                     <button onClick={() => onDelete(todo.id)}>削除</button>
                 </div>
-                </>
-                ))}
+            ))}
         </div>
-        );
+    );
 }
 export default TodoList;

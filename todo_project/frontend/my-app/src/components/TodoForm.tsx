@@ -43,11 +43,14 @@ interface TodoFormProps {
                 <input
                 type="text"
                 value={title}
+                id = "todo-form-input"
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="ToDoの内容を入力"
                 required
                 />
+                <label htmlFor="date-input">期限入力</label>
                 <input
+                id="date-input"
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}

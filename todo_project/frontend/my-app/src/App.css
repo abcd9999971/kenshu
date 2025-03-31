@@ -5,7 +5,7 @@
   margin: 0 auto;
 }
 
-/* 搜尋欄容器 */
+/* サーチエリア */
 .search-container {
   position: fixed;
   top: 0;
@@ -24,7 +24,7 @@
   padding: 0 20px;
 }
 
-/* 搜尋列 */
+
 .search {
   width: 100%;
   padding: 10px 10px 10px 35px;
@@ -45,7 +45,7 @@
   box-shadow: 0 0 0 2px rgba(149, 36, 163, 0.2);
 }
 
-/* 主要內容區域 */
+/* メインエリア */
 .main {
   display: flex;
   gap: 20px;
@@ -59,7 +59,7 @@
   flex: 1;
 }
 
-/* 卡片樣式 */
+/* カード設定 */
 .card {
   background: var(--card-bg);
   border-radius: 8px;
@@ -80,7 +80,7 @@
   padding: 15px;
 }
 
-/* 新增待辦區域 */
+/* ToDo追加 */
 .add-todo {
   display: flex;
   gap: 10px;
@@ -146,7 +146,7 @@ button.delete:hover {
   background: var(--danger-hover);
 }
 
-/* 待辦事項列表 */
+/* list */
 .todo-list {
   display: flex;
   flex-direction: column;
@@ -216,7 +216,7 @@ button.delete:hover {
   flex-grow: 1;
 }
 
-/* 詳細資訊表單 */
+/* from */
 .form-group {
   margin-bottom: 18px;
 }
@@ -285,66 +285,11 @@ textarea.form-control {
   font-size: 14px;
 }
 
-/* 搜索結果為空的提示 */
+/* サーチ結果なし */
 .no-results {
   padding: 20px;
   text-align: center;
   color: #888;
   font-style: italic;
   display: none;
-}
-
-/* 動畫效果 */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.fade-in {
-  animation: fadeIn 0.3s ease;
-}
-
-@media (max-width: 768px) {
-  .main {
-      flex-direction: column;
-  }
-  
-  .form-row {
-      grid-template-columns: 1fr;
-  }
-
-  /* 在移動設備上調整詳情面板 */
-  .right .card {
-      position: fixed;
-      top: 70px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: 10px;
-      z-index: 900;
-      max-height: calc(100vh - 90px);
-      overflow-y: auto;
-      display: none;
-  }
-
-  .right .card.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-  }
-
-  /* 添加關閉按鈕 */
-  .close-details {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: transparent;
-      color: #666;
-      padding: 5px;
-      font-size: 20px;
-      display: none;
-  }
-
-  .right .card.active .close-details {
-      display: block;
-  }
 }

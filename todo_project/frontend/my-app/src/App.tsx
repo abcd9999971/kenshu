@@ -154,9 +154,6 @@ const App: React.FC = () => {
             title: title,
           }),
       });
-
-      if (!response.ok) throw new Error("Failed to create item");
-
       const createdItem = await response.json(); //  Djangoのレスポンス更新
       const update = todos.map((todo) => {
         if (todo.id === todo_id) {
