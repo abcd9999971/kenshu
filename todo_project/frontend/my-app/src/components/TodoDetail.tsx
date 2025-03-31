@@ -8,12 +8,13 @@ export interface TodoDetailProps {
     onClose : () => void; // 選択状態関数
     onToggleCompleteSub?: (id: number, subId: number) => void; // 詳細完成状態関数
     onAddDetail?: (title: string, id: number) => void; // 詳細追加関数
+    onDeleteSub?: (id: number, subId: number) => void; // 詳細削除関数
     }
 
 
     import { useState } from 'react';
 
-    const TodoDetail = ({ selectedTodo, onClose, onToggleComplete, onDelete, onToggleCompleteSub, onAddDetail }: TodoDetailProps) => {
+    const TodoDetail = ({ selectedTodo, onClose, onToggleComplete, onDelete, onToggleCompleteSub, onAddDetail,onDeleteSub }: TodoDetailProps) => {
         const [Subtitle, setSubTitle] = useState("");
 
         return (
@@ -31,19 +32,26 @@ export interface TodoDetailProps {
                                 <p><input
                                     type="checkbox"
                                     checked={detail.completed}
-                                    onChange={() => onToggleCompleteSub &&onToggleCompleteSub(selectedTodo.id , detail.id)}
+                                    onChange={() => onToggleCompleteSub?.(selectedTodo.id , detail.id)}
                                     onClick={(e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation()}
-                                />{detail.title}</p>
+                                />{detail.title}
+                                <button onClick={() => onDeleteSub?.(selectedTodo.id, detail.id)}>削除</button>
+                                </p>
                             </div>
                             ))}
                             <input
                                 type="text"
                                 placeholder="詳細を追加..."
+                                value={Subtitle}
                                 onChange={(e) => setSubTitle(e.target.value)}
                             />
-                            <button onClick={() => onAddDetail?.(Subtitle, selectedTodo.id)}>詳細追加</button>
-                            <button onClick={() => onToggleComplete?.(selectedTodo.id)}>完了</button>
-                            <button onClick={() => onDelete?.(selectedTodo.id)}>削除</button>
+                            <p><button onClick={() => {
+                                onAddDetail?.(Subtitle, selectedTodo.id);
+                                setSubTitle(""); //reset input 
+                                }
+                            }>詳細追加</button></p>
+                            <button onClick={() => onToggleComplete?.(selectedTodo.id)}>完成状態変更</button>
+                            <button onClick={() => onDelete?.(selectedTodo.id)}>TODOを削除</button>
                             <button className="close-details" onClick={onClose}>&times;</button>
                         </div>
                     ) : (

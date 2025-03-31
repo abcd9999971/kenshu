@@ -4,7 +4,7 @@ import SearchBar from './components/SearchBar';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import TodoDetail from './components/TodoDetail';
-import { Todo, Detail}from './type';
+import { Todo }from './type';
 
 
 const App: React.FC = () => {
@@ -13,7 +13,7 @@ const App: React.FC = () => {
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
-    // 获取后端的todo数据
+    // APIからデータを取得
     fetch('http://localhost:8000/api/tasks/')
       .then((response) => response.json())
       .then((data) => {
@@ -25,7 +25,7 @@ const App: React.FC = () => {
           details: task.sub_tasks.map((subtask: any) => ({
             id: subtask.id,
             title: subtask.title,
-            todo_id: task.id, // 关联到父任务的ID
+            todo_id: task.id, // task.idを保存
             completed: subtask.completed,
           })),
         }));
@@ -40,7 +40,7 @@ const App: React.FC = () => {
     setFilteredTodos(todos);
   }, [todos]);
 
-  // 搜索过滤
+  // フィルター
   const handleSearch = (searchTerm: string) => {
     setFilteredTodos(
       searchTerm.trim()
@@ -51,7 +51,7 @@ const App: React.FC = () => {
     );
   };
 
-  // 添加todo
+  // ToDoの追加
   const handleAddTodo = (newTodo: Omit<Todo, 'id'>) => {
     fetch('http://localhost:8000/api/tasks/', {
       method: 'POST',
@@ -65,7 +65,7 @@ const App: React.FC = () => {
         setTodos([...todos, data]);
       });
   };
-
+  // ToDo(task)の完了状態を変更
   const handleToggleComplete = (id: number) => {
     const updatedTodos = todos.map((todo) =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -79,6 +79,7 @@ const App: React.FC = () => {
       },
     });
   } 
+  // ToDoの詳細(subtask)の完了状態を変更
   const handleToggleCompleteSub= (id1: number, id2 : number) => {
     const updatedTodos = todos.map((todo) => {
       if (todo.id === id1) {
@@ -102,7 +103,7 @@ const App: React.FC = () => {
   }
 
 
-
+  // Todo削除
   const handleDelete = (id: number) => {
     fetch(`http://localhost:8000/api/tasks/${id}/`, {
       method: 'DELETE',
@@ -111,7 +112,26 @@ const App: React.FC = () => {
         setTodos(todos.filter((todo) => todo.id !== id));
       });
   };
- 
+
+  // 詳細の削除
+  const handleDeleteSub = (id1: number,id2:number) => {
+    fetch(`http://localhost:8000/api/tasks/${id1}/delete_subtask/${id2}/`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        const updatedTodos = todos.map((todo) => {
+          if (todo.id === id1) {
+            const updatedDetails = todo.details?.filter((detail) => detail.id !== id2);
+            return { ...todo, details: updatedDetails };
+          }
+          return todo;
+        });
+        setTodos(updatedTodos);
+        setSelectedTodo(updatedTodos.find(todo => todo.id === id1) || null); 
+      });
+  };
+  
+  // 詳細の選択
   const handleSelectTodo = (id : number) => {
     const selected = todos.find((todo) => todo.id === id);
     if (selected) {
@@ -122,6 +142,7 @@ const App: React.FC = () => {
     setSelectedTodo(null);
   };
 
+  // 詳細の追加
   const handleAddDetail = async (title:string , todo_id : number) => {
     try {
       const response = await fetch(`http://localhost:8000/api/tasks/${todo_id}/add_subtask/`, {
@@ -136,7 +157,7 @@ const App: React.FC = () => {
 
       if (!response.ok) throw new Error("Failed to create item");
 
-      const createdItem = await response.json(); // 從 Django 獲取新的 item
+      const createdItem = await response.json(); //  Djangoのレスポンス更新
       const update = todos.map((todo) => {
         if (todo.id === todo_id) {
           const updatedDetails = [...(todo.details || []),
@@ -179,6 +200,7 @@ const App: React.FC = () => {
         onClose={handleCloseDetail}
         onToggleCompleteSub={handleToggleCompleteSub}
         onAddDetail={handleAddDetail}
+        onDeleteSub={handleDeleteSub}
       />
       </div>
       </div>
