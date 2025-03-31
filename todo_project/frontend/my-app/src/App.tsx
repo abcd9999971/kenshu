@@ -4,8 +4,7 @@ import SearchBar from './components/SearchBar';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import TodoDetail from './components/TodoDetail';
-import { Todo }from './type';
-import { Detail } from './type';
+import { Todo, Detail}from './type';
 
 
 const App: React.FC = () => {
@@ -13,33 +12,30 @@ const App: React.FC = () => {
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
 
-  /*
   useEffect(() => {
     // 获取后端的todo数据
     fetch('http://localhost:8000/api/tasks/')
       .then((response) => response.json())
-      .then((data) => setTodos(data));
+      .then((data) => {
+        const formattedTodos: Todo[] = data.map((task: any) => ({
+          id: task.id,
+          title: task.title,
+          completed: task.completed,
+          deadline: task.deadline,
+          details: task.sub_tasks.map((subtask: any) => ({
+            id: subtask.id,
+            title: subtask.title,
+            todo_id: task.id, // 关联到父任务的ID
+            completed: subtask.completed,
+          })),
+        }));
+        setTodos(formattedTodos);
+      })
+      .catch((error) => console.error("Error fetching todos:", error));
   }, []);
-  */
+  
 
-  useEffect(() => {
-    fetch("http://localhost:8000/api/tasks/")
-        .then((response) => response.json())
-        .then((data) => {
-            const formattedTodos: Todo[] = data.map((task: any) => ({
-                id: task.id,                // 映射 id
-                title: task.title,          // 映射 title
-                deadline: task.deadline,    // 映射 deadline
-                completed: task.completed,  // 映射 completed
-                detail: task.sub_tasks.length > 0 
-                    ? { title: task.sub_tasks[0].title, todo_id: task.id } 
-                    : undefined            // 将 sub_tasks 映射为 detail
-            }));
-            setTodos(formattedTodos);
-        })
-        .catch((error) => console.error("Error fetching todos:", error));
-}, []);
-
+  
   useEffect(() => {
     setFilteredTodos(todos);
   }, [todos]);
@@ -76,14 +72,46 @@ const App: React.FC = () => {
     );
     setTodos(updatedTodos);
 
-    fetch(`http://localhost:8000/api/tasks/${id}/`, {
+    fetch(`http://localhost:8000/api/tasks/${id}/completed/`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ completed: !todos.find(todo => todo.id === id)?.completed }),
     });
-  }
+  } 
+  
+  const handleToggleCompleteSub = (id1: number, id2: number) => {
+    fetch(`http://localhost:8000/api/tasks/${id1}/completed/${id2}/`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to update subtask');
+        }
+        return response.json(); // 返回响应的JSON数据
+      })
+      .then((data) => {
+        // 请求成功后，更新前端数据
+        const updatedTodos = todos.map((todo) => {
+          if (todo.id === id1) {
+            const updatedDetails = (todo.details ?? []).map((detail) =>
+              detail.id === id2 ? { ...detail, completed: !detail.completed } : detail
+            );
+            return { ...todo, details: updatedDetails };
+          }
+          return todo;
+        });
+        setTodos(updatedTodos);
+      })
+      .catch((error) => {
+        console.error('Error updating subtask:', error);
+      });
+  };
+
+
 
   const handleDelete = (id: number) => {
     fetch(`http://localhost:8000/api/tasks/${id}/`, {
@@ -102,6 +130,41 @@ const App: React.FC = () => {
   };
   const handleCloseDetail = () => {
     setSelectedTodo(null);
+  };
+
+  const handleAddDetail = async (title:string , todo_id : number) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/tasks/${todo_id}/add_subtask/`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: title,
+          }),
+      });
+
+      if (!response.ok) throw new Error("Failed to create item");
+
+      const createdItem = await response.json(); // 從 Django 獲取新的 item
+      const update = todos.map((todo) => {
+        if (todo.id === todo_id) {
+          const updatedDetails = [...(todo.details || []),
+            {
+              id: createdItem.id,
+              title: createdItem.title,
+              todo_id: todo_id,
+              completed: false,
+            },
+        ];
+          return { ...todo, details: updatedDetails };
+        }
+        return todo;
+      });
+      setTodos(update); // 更新 React 狀態
+          } catch (error) {
+      console.error(error);
+      }
   };
 
   return (
@@ -123,6 +186,8 @@ const App: React.FC = () => {
         onToggleComplete={handleToggleComplete}
         onDelete={handleDelete}
         onClose={handleCloseDetail}
+        onToggleCompleteSub={handleToggleCompleteSub}
+        onAddDetail={handleAddDetail}
       />
       </div>
       </div>

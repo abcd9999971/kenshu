@@ -27,7 +27,6 @@ const TodoList = ({ todos, onToggleComplete, onDelete, onSelectTodo }: TodoListP
                     />
                     <h3>{todo.title}</h3>
                     <p>期限: {todo.deadline}</p>
-                    <p>{todo.completed ? '完了' : '未完了'}</p>
                     <button onClick={() => onSelectTodo && onSelectTodo(todo.id)}>詳細</button>
                     <button onClick={() => onDelete(todo.id)}>削除</button>
                 </div>

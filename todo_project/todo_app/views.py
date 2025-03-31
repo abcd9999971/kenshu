@@ -29,7 +29,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     
 
     def mark_as_completed(self, obj):
-        obj.completed = True
+        obj.completed = not obj.completed
         obj.save()
         return Response({'status': f'{obj.__class__.__name__} completed'})
 
