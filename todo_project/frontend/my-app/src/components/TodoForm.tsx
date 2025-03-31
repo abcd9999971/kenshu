@@ -41,6 +41,7 @@ interface TodoFormProps {
             <div className="card-content">
             <div className="add-todo">
                 <input
+                className="todo-input"
                 type="text"
                 value={title}
                 id = "todo-form-input"
@@ -48,14 +49,15 @@ interface TodoFormProps {
                 placeholder="ToDoの内容を入力"
                 required
                 />
-                <label htmlFor="date-input">期限入力</label>
                 <input
+                className="date-input"
                 id="date-input"
-                type="date"
+                aria-label='date-input' //label付与
+                type="datetime-local"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 />
-            <button className="btn btn-primary" type="submit">登録</button>
+            <button  type="submit">登録</button>
             </div>
         </div>
         </form>

@@ -14,16 +14,24 @@ export interface TodoDetailProps {
 
     import { useState } from 'react';
 
-    const TodoDetail = ({ selectedTodo, onClose, onToggleComplete, onDelete, onToggleCompleteSub, onAddDetail,onDeleteSub }: TodoDetailProps) => {
+    const TodoDetail = ({ 
+        selectedTodo, 
+        onClose, 
+        onToggleComplete, 
+        onDelete, 
+        onToggleCompleteSub, 
+        onAddDetail,
+        onDeleteSub 
+    }: TodoDetailProps) => {
         const [Subtitle, setSubTitle] = useState("");
-
+    
         return (
             <div className="card" id="details-card">
-                <div className="card-header">ToDo詳細</div>
+                <div className="card-header">{selectedTodo ? selectedTodo.title : 'ToDo詳細'}</div>
                 <div className="card-body">
                     {selectedTodo ? (
                         <div className="todo-detail">
-                            <h3>{selectedTodo.title}</h3>
+                            
                             <p>期限: {selectedTodo.deadline}</p>
                             
                             <p>詳細:</p>
