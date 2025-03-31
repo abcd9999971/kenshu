@@ -18,9 +18,9 @@ const TodoList = ({ todos, onToggleComplete, onDelete, onSelectTodo }: TodoListP
         <div className="todo-list">
             {todos.map((todo) => (
                 <div className="todo-item" key={todo.id}>
-                    <label htmlFor={`todo-${todo.id}`}>Todoリスト</label>
                     <input
                         type="checkbox"
+                        aria-label={`todo-${todo.id}`} //label付与
                         id={`todo-${todo.id}`} //inputにIDを付与
                         checked={todo.completed}
                         onChange={() => onToggleComplete && onToggleComplete(todo.id)}

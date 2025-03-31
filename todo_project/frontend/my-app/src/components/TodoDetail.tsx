@@ -29,9 +29,9 @@ export interface TodoDetailProps {
                             <p>詳細:</p>
                             {selectedTodo.details?.map((detail) => (
                             <div key={detail.id}> 
-                                <label htmlFor={`detail-${detail.id}`}>詳細リスト</label>
                                 <p><input //詳細のリスト
                                     type="checkbox"
+                                    aria-label={`detail-${detail.id}`} //label付与
                                     id={`detail-${detail.id}`} //inputにIDを付与
                                     checked={detail.completed}
                                     onChange={() => onToggleCompleteSub?.(selectedTodo.id , detail.id)}
