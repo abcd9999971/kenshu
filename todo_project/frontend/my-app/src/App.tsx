@@ -79,37 +79,27 @@ const App: React.FC = () => {
       },
     });
   } 
-  
-  const handleToggleCompleteSub = (id1: number, id2: number) => {
+  const handleToggleCompleteSub= (id1: number, id2 : number) => {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === id1) {
+      const updatedDetails = (todo.details ?? []).map((detail) =>
+        detail.id === id2 ? { ...detail, completed: !detail.completed } : detail
+      );
+      return { ...todo, details: updatedDetails };
+      }
+      return todo;
+    });
+
+    setTodos(updatedTodos);
+    setSelectedTodo(updatedTodos.find(todo => todo.id === id1) || null);
+
     fetch(`http://localhost:8000/api/tasks/${id1}/completed/${id2}/`, {
       method: 'PATCH',
       headers: {
-        'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
       },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to update subtask');
-        }
-        return response.json(); // 返回响应的JSON数据
-      })
-      .then((data) => {
-        // 请求成功后，更新前端数据
-        const updatedTodos = todos.map((todo) => {
-          if (todo.id === id1) {
-            const updatedDetails = (todo.details ?? []).map((detail) =>
-              detail.id === id2 ? { ...detail, completed: !detail.completed } : detail
-            );
-            return { ...todo, details: updatedDetails };
-          }
-          return todo;
-        });
-        setTodos(updatedTodos);
-      })
-      .catch((error) => {
-        console.error('Error updating subtask:', error);
-      });
-  };
+    });
+  }
 
 
 
@@ -161,7 +151,8 @@ const App: React.FC = () => {
         }
         return todo;
       });
-      setTodos(update); // 更新 React 狀態
+      setTodos(update); 
+      setSelectedTodo(update.find((todo) => todo.id === todo_id) || null);
           } catch (error) {
       console.error(error);
       }
